@@ -1,0 +1,25 @@
+{
+  "id": "art-of-starting",
+  "title": "The Art of Starting Something New",
+  "date": "2026-09-14",
+  "category": "Thoughts",
+  "color": "#DFF4FF",
+  "content": [
+    "Starting something new is uncomfortable because you are stepping into a situation where the result is unknown. You don't know whether the idea will work, whether people will care, or whether you are simply wasting your time.",
+    "But waiting until everything is perfect creates a strange problem: **you never actually begin.**",
+    "The first version of an idea is rarely the final version. You build something, notice what is wrong, learn from it, and improve it. That cycle is often more valuable than planning everything beforehand.",
+    "Starting also teaches you something that research alone cannot. *You discover what actually matters only after you begin doing the work.*",
+    "So the goal is not to start perfectly. The goal is to start honestly, learn quickly, and keep improving."
+  ],
+  "youtube": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+  "sources": [
+    {
+      "name": "MDN Web Docs",
+      "link": "https://developer.mozilla.org/"
+    },
+    {
+      "name": "Example Reference",
+      "link": "https://example.com"
+    }
+  ]
+}
