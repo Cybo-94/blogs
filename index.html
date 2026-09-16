@@ -5,17 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="CYBO Blog - Ideas, observations, experiments, and questions worth carrying forward.">
   <title>CYBO — Blog</title>
-  <link rel="icon" type="image/png" href="https://i.imgur.com/dqV1mDV.png">
+  <link rel="icon" type="image/png" href="https://i.imgur.com/nrOMBEp.png">
 
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800&display=swap');
-    @import url('https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@800,900&f[]=satoshi@400,500,700&display=swap');
 
     :root {
       --ink: #080909;
-      --surface: #0d0f0f;
       --line: rgba(255,255,255,.12);
-      --muted: rgba(255,255,255,.58);
       --cyan: #8ef2ff;
     }
 
@@ -28,24 +25,28 @@
 
     body {
       margin: 0;
+      overflow-x: hidden;
       background:
-        linear-gradient(135deg, rgba(0,242,255,.055) 0%, transparent 34%, rgba(255,0,255,.045) 68%, transparent 100%),
+        linear-gradient(
+          135deg,
+          rgba(0,242,255,.055) 0%,
+          transparent 34%,
+          rgba(255,0,255,.045) 68%,
+          transparent 100%
+        ),
         var(--ink);
       background-attachment: fixed;
       color: #fff;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      overflow-x: hidden;
     }
 
     body.modal-open { overflow: hidden; }
-
-    a { color: inherit; }
 
     .orbitron { font-family: "Orbitron", sans-serif; }
 
     .topbar {
       position: fixed;
-      inset: 0 0 auto 0;
+      inset: 0 0 auto;
       z-index: 40;
       height: 76px;
       background: rgba(8,9,9,.96);
@@ -57,7 +58,7 @@
     .main-inner,
     .footer-inner {
       width: min(1440px, calc(100% - 40px));
-      margin: 0 auto;
+      margin: auto;
     }
 
     .topbar-inner {
@@ -133,7 +134,9 @@
       font-size: 14px;
     }
 
-    #search-input::placeholder { color: rgba(255,255,255,.4); }
+    #search-input::placeholder {
+      color: rgba(255,255,255,.4);
+    }
 
     .clear-search {
       width: 44px;
@@ -198,17 +201,13 @@
     }
 
     .sort-wrap {
+      height: 44px;
       display: flex;
       align-items: center;
       gap: 8px;
       flex-shrink: 0;
       padding-left: 16px;
       border-left: 1px solid var(--line);
-    }
-
-    .top-sort {
-      margin-left: 0;
-      padding-left: 12px;
     }
 
     .sort-label {
@@ -220,9 +219,12 @@
     }
 
     #sort-select {
+      width: auto;
+      min-width: 105px;
+      height: 44px;
+      padding: 0 10px;
       border: 1px solid rgba(255,255,255,.1);
-      border-radius: 6px;
-      padding: 8px 10px;
+      border-radius: 9px;
       background: #171919;
       color: #fff;
       font-size: 12px;
@@ -274,14 +276,18 @@
 
     .card-wrap {
       break-inside: avoid;
-      margin: 0 0 24px;
+      margin-bottom: 24px;
     }
 
     .blog-card {
+      --card-text: #101313;
+      --card-muted: rgba(16,19,19,.58);
+      --card-border: rgba(0,0,0,.1);
+
       width: 100%;
       padding: 24px;
       border-radius: 16px;
-      color: #101313;
+      color: var(--card-text);
       cursor: pointer;
       transition: transform .28s ease, box-shadow .28s ease, filter .28s ease;
     }
@@ -304,6 +310,7 @@
       padding: 5px 10px;
       border-radius: 999px;
       background: rgba(0,0,0,.1);
+      color: var(--card-text);
       font-size: 10px;
       font-weight: 700;
       letter-spacing: .15em;
@@ -311,13 +318,14 @@
     }
 
     .card-date {
+      color: var(--card-muted);
       font-size: 12px;
-      opacity: .6;
       white-space: nowrap;
     }
 
     .blog-card h2 {
       margin: 0;
+      color: var(--card-text);
       font-family: "Orbitron", sans-serif;
       font-size: 20px;
       line-height: 1.25;
@@ -325,9 +333,14 @@
 
     .blog-card .preview {
       margin: 20px 0 0;
+      color: var(--card-muted);
       font-size: 14px;
       line-height: 1.7;
-      opacity: .7;
+    }
+
+    .blog-card .preview strong,
+    .blog-card .preview em {
+      color: var(--card-text);
     }
 
     .card-footer {
@@ -336,10 +349,10 @@
       justify-content: space-between;
       margin-top: 32px;
       padding-top: 14px;
-      border-top: 1px solid rgba(0,0,0,.1);
+      border-top: 1px solid var(--card-border);
+      color: var(--card-muted);
       font-size: 12px;
       font-weight: 700;
-      opacity: .55;
     }
 
     .card-in {
@@ -361,16 +374,13 @@
 
     .empty-state.show { display: block; }
 
+    /* FOOTER */
+
     footer {
-      border-top: 1px solid rgba(255,255,255,.1);
-      background: #000;
       width: 100%;
       padding: 48px 40px;
-    }
-
-    .footer-inner {
-      width: min(1440px, 100%);
-      margin: 0 auto;
+      border-top: 1px solid rgba(255,255,255,.1);
+      background: #000;
     }
 
     .footer-grid {
@@ -384,13 +394,12 @@
       display: flex;
       flex-direction: column;
       align-items: flex-start;
-      text-align: left;
     }
 
     .footer-brand-title {
       margin: 0 0 8px;
       color: #fff;
-      font-family: 'Cabinet Grotesk', sans-serif;
+      font-family: "Orbitron", sans-serif;
       font-size: 30px;
       font-weight: 900;
       letter-spacing: -.06em;
@@ -398,9 +407,8 @@
     }
 
     .footer-description {
-      margin: 0;
-      font-family: 'Satoshi', sans-serif;
       max-width: 344px;
+      margin: 0;
       color: #9ca3af;
       font-size: 15px;
       line-height: 1.5;
@@ -415,7 +423,6 @@
 
     .footer-contact-label {
       margin: 0 0 8px;
-      font-family: 'Satoshi', sans-serif;
       color: #6b7280;
       font-size: 10px;
       font-weight: 700;
@@ -425,7 +432,7 @@
 
     .footer-contact-email {
       color: #22d3ee;
-      font-family: 'Cabinet Grotesk', sans-serif;
+      font-family: "Orbitron", sans-serif;
       font-size: clamp(20px, 2.4vw, 30px);
       font-weight: 900;
       text-decoration: none;
@@ -437,7 +444,6 @@
 
     .footer-bottom {
       display: flex;
-      font-family: 'Satoshi', sans-serif;
       align-items: center;
       justify-content: space-between;
       gap: 16px;
@@ -451,8 +457,7 @@
 
     .footer-bottom p { margin: 0; }
 
-    .footer-version-wrap { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; text-align: right; }
-    .footer-version { font-size: 9px; letter-spacing: .16em; }
+    /* READING MODE */
 
     .modal-backdrop {
       position: fixed;
@@ -469,10 +474,11 @@
 
     .modal-panel {
       width: min(1150px, 100%);
-      margin: 0 auto;
+      margin: auto;
       overflow: hidden;
       border: 1px solid rgba(255,255,255,.12);
       border-radius: 18px;
+      background: #2f3133;
       box-shadow: 0 30px 80px rgba(0,0,0,.5);
       animation: rise .3s ease both;
     }
@@ -483,33 +489,41 @@
     }
 
     .modal-header {
+      height: 58px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 16px 20px;
-      background: rgba(0,0,0,.05);
-      border-bottom: 1px solid rgba(0,0,0,.1);
+      padding: 0 20px;
+      background: #2a2c2e;
+      border-bottom: 1px solid rgba(255,255,255,.1);
     }
 
     .reading-room {
-      color: rgba(0,0,0,.5);
+      color: rgba(255,255,255,.68);
       font-family: "Orbitron", sans-serif;
-      font-size: 10px;
+      font-size: 12px;
       font-weight: 700;
-      letter-spacing: .2em;
+      letter-spacing: .18em;
       text-transform: uppercase;
     }
 
     .close-modal {
-      width: 40px;
-      height: 40px;
+      width: 38px;
+      height: 38px;
       display: grid;
       place-items: center;
-      border: 0;
+      border: 1px solid rgba(255,255,255,.1);
       border-radius: 9px;
-      background: rgba(0,0,0,.08);
-      color: #101313;
+      background: rgba(255,255,255,.06);
+      color: rgba(255,255,255,.78);
       cursor: pointer;
+      transition: .2s ease;
+    }
+
+    .close-modal:hover {
+      background: rgba(255,255,255,.13);
+      color: #fff;
+      transform: scale(1.03);
     }
 
     .modal-grid {
@@ -521,10 +535,12 @@
       max-height: 72vh;
       overflow-y: auto;
       padding: 48px;
-      color: #101313;
+      background: var(--article-bg);
+      color: var(--article-text);
     }
 
     .modal-article::-webkit-scrollbar { width: 6px; }
+
     .modal-article::-webkit-scrollbar-thumb {
       background: rgba(0,0,0,.25);
       border-radius: 20px;
@@ -535,7 +551,7 @@
       flex-wrap: wrap;
       gap: 10px;
       margin-bottom: 28px;
-      color: rgba(0,0,0,.55);
+      color: var(--article-muted);
       font-size: 12px;
       font-weight: 700;
       letter-spacing: .12em;
@@ -544,6 +560,7 @@
 
     .modal-article h1 {
       margin: 0;
+      color: var(--article-text);
       font-family: "Orbitron", sans-serif;
       font-size: clamp(32px, 5vw, 52px);
       line-height: 1.12;
@@ -551,30 +568,39 @@
 
     .article-content {
       margin-top: 38px;
+      color: var(--article-text);
       font-size: 16px;
       line-height: 2;
-      color: rgba(16,19,19,.8);
     }
 
     .article-content p { margin: 0 0 22px; }
 
+    /* SIDEBAR */
+
     .modal-sidebar {
-      padding: 32px;
+      height: 72vh;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      padding: 28px 30px;
       background: #5b5b5b;
-      border-left: 1px solid rgba(0,0,0,.16);
+      border-left: 1px solid rgba(0,0,0,.18);
       color: #fff;
     }
-
-    .sidebar-section + .sidebar-section { margin-top: 40px; }
 
     .sidebar-section h2 {
       margin: 0;
       color: #fff;
       font-family: "Orbitron", sans-serif;
       font-size: 14px;
-      line-height: 1.7;
+      line-height: 1.4;
       text-transform: uppercase;
-      text-shadow: 0 1px 0 rgba(0,0,0,.2);
+      letter-spacing: .08em;
+    }
+
+    .video-section {
+      flex: 0 0 auto;
     }
 
     .video-link {
@@ -582,9 +608,8 @@
       display: block;
       margin-top: 18px;
       overflow: hidden;
-      border: 1px solid rgba(0,0,0,.12);
+      border: 1px solid rgba(0,0,0,.18);
       border-radius: 12px;
-      text-decoration: none;
     }
 
     .video-link img {
@@ -615,31 +640,92 @@
       color: #000;
     }
 
+    .sources-section {
+      min-height: 0;
+      flex: 1 1 auto;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      margin-top: 28px;
+      padding-top: 24px;
+      border-top: 1px solid rgba(255,255,255,.35);
+    }
+
     .sources-list {
+      min-height: 0;
+      overflow-y: auto;
       display: grid;
+      align-content: start;
       gap: 8px;
       margin-top: 16px;
+      padding-right: 6px;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255,255,255,.4) transparent;
+    }
+
+    .sources-list::-webkit-scrollbar { width: 6px; }
+
+    .sources-list::-webkit-scrollbar-thumb {
+      background: rgba(255,255,255,.35);
+      border-radius: 20px;
     }
 
     .source-link {
       display: block;
       padding: 12px;
-      border: 1px solid rgba(0,0,0,.1);
+      border: 1px solid rgba(255,255,255,.12);
       border-radius: 9px;
-      background: rgba(255,255,255,.2);
-      color: rgba(16,19,19,.75);
+      background: rgba(0,0,0,.22);
+      color: #fff;
       font-size: 14px;
+      line-height: 1.45;
       text-decoration: none;
       transition: .2s ease;
     }
 
     .source-link:hover {
-      background: rgba(255,255,255,.4);
-      color: #101313;
+      background: rgba(0,0,0,.36);
+      border-color: rgba(255,255,255,.22);
       transform: translateX(3px);
     }
 
     .hidden { display: none !important; }
+
+    /* BACK TO TOP */
+
+    #back-to-top {
+      position: fixed;
+      right: 28px;
+      bottom: 28px;
+      z-index: 80;
+      width: 46px;
+      height: 46px;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(255,255,255,.16);
+      border-radius: 50%;
+      background: rgba(20,22,22,.9);
+      color: #fff;
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transform: translateY(12px);
+      transition: opacity .25s ease, visibility .25s ease, transform .25s ease, background .2s ease;
+      backdrop-filter: blur(8px);
+    }
+
+    #back-to-top.show {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+
+    #back-to-top:hover {
+      background: #fff;
+      color: #000;
+    }
 
     .loading {
       padding: 60px 0;
@@ -650,9 +736,10 @@
 
     @media (max-width: 1024px) {
       .masonry { column-count: 2; }
+
       .search-shell { width: 220px; }
+
       .search-shell:focus-within { width: 260px; }
-      .top-sort { padding-left: 10px; }
     }
 
     @media (max-width: 700px) {
@@ -664,6 +751,7 @@
       }
 
       .topbar { height: 68px; }
+
       .subbar { top: 68px; }
 
       .back-button {
@@ -686,21 +774,27 @@
       }
 
       .search-shell:focus-within { width: 44px; }
+
       #search-input { display: none; }
 
-      .top-sort {
+      .top-controls { gap: 8px; }
+
+      .sort-wrap {
         padding-left: 0;
         border-left: 0;
       }
 
-      .top-sort .sort-label { display: none; }
+      .sort-label { display: none; }
+
       #sort-select {
         width: 44px;
+        min-width: 44px;
         height: 44px;
-        padding: 0 6px;
+        padding: 0 5px;
       }
 
       .main { padding-top: 140px; }
+
       .masonry { column-count: 1; }
 
       .modal-backdrop { padding: 12px; }
@@ -713,9 +807,18 @@
       }
 
       .modal-sidebar {
-        border-left: 0;
-        border-top: 1px solid rgba(0,0,0,.1);
+        height: auto;
+        overflow: visible;
         padding: 24px 22px;
+        border-left: 0;
+        border-top: 1px solid rgba(255,255,255,.14);
+      }
+
+      .sources-section { max-height: 280px; }
+
+      #back-to-top {
+        right: 18px;
+        bottom: 18px;
       }
 
       footer { padding: 48px 24px; }
@@ -737,31 +840,48 @@
       }
 
       .footer-crafted { display: none; }
-      .footer-version-wrap { align-items: center; text-align: center; }
     }
   </style>
 </head>
 
 <body>
+
   <header class="topbar">
     <div class="topbar-inner">
+
       <div class="left-controls">
-        <a class="back-button" href="https://cybo-94.github.io/og-sites/" aria-label="Back to CYBO home">
+        <a
+          class="back-button"
+          href="https://cybo-94.github.io/og-sites/"
+          aria-label="Back to CYBO"
+        >
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M19 12H5M12 19l-7-7 7-7"/>
           </svg>
           <span>Back</span>
         </a>
-        <img class="brand-logo" src="https://i.imgur.com/dqV1mDV.png" alt="CYBO logo">
+
+        <img
+          class="brand-logo"
+          src="https://i.imgur.com/nrOMBEp.png"
+          alt="CYBO logo"
+        >
       </div>
 
       <div class="top-controls">
+
         <label class="search-shell" for="search-input">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <circle cx="11" cy="11" r="8"/>
             <path d="m21 21-4.35-4.35"/>
           </svg>
-          <input id="search-input" type="search" placeholder="Search ideas..." autocomplete="off">
+
+          <input
+            id="search-input"
+            type="search"
+            placeholder="Search ideas..."
+            autocomplete="off"
+          >
         </label>
 
         <button id="clear-search" class="clear-search" aria-label="Clear search">
@@ -771,13 +891,15 @@
           </svg>
         </button>
 
-        <div class="sort-wrap top-sort">
+        <div class="sort-wrap">
           <span class="sort-label">Sort</span>
+
           <select id="sort-select" aria-label="Sort posts">
             <option value="newest">Newest</option>
             <option value="oldest">Oldest</option>
           </select>
         </div>
+
       </div>
     </div>
   </header>
@@ -785,67 +907,125 @@
   <div class="subbar">
     <div class="subbar-inner">
       <div id="categories"></div>
-
     </div>
   </div>
 
   <main class="main">
     <div class="main-inner">
+
       <section class="intro">
         <p class="eyebrow">CYBO / Notes from the edge</p>
-        <h1>Ideas in motion<span>.</span></h1>
-        <p>A small archive of observations, experiments, and questions worth carrying forward.</p>
+
+        <h1>
+          Ideas in motion<span>.</span>
+        </h1>
+
+        <p>
+          A small archive of observations, experiments,
+          and questions worth carrying forward.
+        </p>
       </section>
 
       <div id="blog-grid" class="masonry" aria-live="polite">
         <div class="loading">Loading notes...</div>
       </div>
 
-      <p id="empty-state" class="empty-state">No notes match that search.</p>
+      <p id="empty-state" class="empty-state">
+        No notes match that search.
+      </p>
+
     </div>
   </main>
 
-  <footer class="footer-full">
+  <footer>
     <div class="footer-inner">
+
       <div class="footer-grid">
+
         <div class="footer-brand-block">
-          <h3 class="footer-brand-title">Coolest Young Brain Online</h3>
-          <p class="footer-description">Pioneering the intersection of physics, technology, and exploration.</p>
+          <h3 class="footer-brand-title">
+            Coolest Young Brain Online
+          </h3>
+
+          <p class="footer-description">
+            Pioneering the intersection of physics,
+            technology, and exploration.
+          </p>
         </div>
 
         <div class="footer-contact">
-          <p class="footer-contact-label">Direct Business Contact</p>
-          <a href="mailto:cybo94.buisness@gmail.com" class="footer-contact-email">cybo94.buisness@gmail.com</a>
+          <p class="footer-contact-label">
+            Direct Business Contact
+          </p>
+
+          <a
+            href="mailto:cybo94.buisness@gmail.com"
+            class="footer-contact-email"
+          >
+            cybo94.buisness@gmail.com
+          </a>
         </div>
+
       </div>
 
       <div class="footer-bottom">
         <p>© 2025 CYBO. ALL RIGHTS RESERVED.</p>
-        <div class="footer-version-wrap"><p>CRAFTED IN INDIA WITH CURIOSITY</p><p class="footer-version">VERSION 1.3.2</p></div>
+        <p class="footer-crafted">CRAFTED IN INDIA WITH CURIOSITY</p>
       </div>
+
     </div>
   </footer>
 
-  <div id="modal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+  <!-- READING MODE -->
+
+  <div
+    id="modal"
+    class="modal-backdrop"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="modal-title"
+  >
+
     <div class="modal-panel">
+
       <div class="modal-header">
-        <span class="reading-room">Reading room</span>
-        <button id="close-modal" class="close-modal" aria-label="Close article">
+
+        <span class="reading-room">
+          Reading Mode
+        </span>
+
+        <button
+          id="close-modal"
+          class="close-modal"
+          aria-label="Exit reading mode"
+          title="Exit Reading Mode"
+        >
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <line x1="18" y1="6" x2="6" y2="18"/>
-            <line x1="6" y1="6" x2="18" y2="6"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
           </svg>
         </button>
+
       </div>
 
       <div class="modal-grid">
+
         <article id="article-body" class="modal-article"></article>
 
         <aside class="modal-sidebar">
-          <section id="video-section" class="sidebar-section">
-            <h2>Watch the Idea<br>in Motion</h2>
-            <a id="video-link" class="video-link" target="_blank" rel="noopener noreferrer">
+
+          <section id="video-section" class="sidebar-section video-section">
+
+            <h2>VIDEO</h2>
+
+            <a
+              id="video-link"
+              class="video-link"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <img id="video-thumb" alt="YouTube video thumbnail">
+
               <span class="play-button">
                 <span>
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
@@ -854,18 +1034,38 @@
                 </span>
               </span>
             </a>
+
           </section>
 
-          <section id="sources-section" class="sidebar-section">
+          <section id="sources-section" class="sidebar-section sources-section">
+
             <h2>Sources</h2>
+
             <div id="sources-list" class="sources-list"></div>
+
           </section>
+
         </aside>
+
       </div>
     </div>
   </div>
 
+  <!-- BACK TO TOP -->
+
+  <button
+    id="back-to-top"
+    aria-label="Back to top"
+    title="Back to top"
+  >
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M12 19V5"/>
+      <path d="m5 12 7-7 7 7"/>
+    </svg>
+  </button>
+
   <script>
+
     const state = {
       blogs: [],
       activeCategory: "All",
@@ -873,7 +1073,7 @@
       sortOrder: "newest"
     };
 
-    const $ = (selector) => document.querySelector(selector);
+    const $ = selector => document.querySelector(selector);
 
     function escapeHtml(value) {
       const div = document.createElement("div");
@@ -883,22 +1083,58 @@
 
     function safeColor(value) {
       const color = String(value ?? "");
-      return /^#[0-9a-fA-F]{6}$/.test(color) ? color : "#E8FFD9";
+      return /^#[0-9a-fA-F]{6}$/.test(color)
+        ? color
+        : "#E8FFD9";
     }
 
+    /*
+      Determines whether a blog card should use
+      black or white text from its background.
+    */
 
-    function getReadableTextColor(hexColor) {
-      const hex = safeColor(hexColor).slice(1);
-      const red = parseInt(hex.slice(0, 2), 16);
-      const green = parseInt(hex.slice(2, 4), 16);
-      const blue = parseInt(hex.slice(4, 6), 16);
-      const luminance = (0.299 * red) + (0.587 * green) + (0.114 * blue);
-      return luminance < 155 ? "#ffffff" : "#101313";
+    function getReadableTextColors(hex) {
+
+      const clean = hex.replace("#", "");
+
+      const r = parseInt(clean.slice(0, 2), 16) / 255;
+      const g = parseInt(clean.slice(2, 4), 16) / 255;
+      const b = parseInt(clean.slice(4, 6), 16) / 255;
+
+      const linear = value =>
+        value <= 0.03928
+          ? value / 12.92
+          : Math.pow((value + 0.055) / 1.055, 2.4);
+
+      const luminance =
+        0.2126 * linear(r) +
+        0.7152 * linear(g) +
+        0.0722 * linear(b);
+
+      if (luminance > 0.55) {
+        return {
+          text: "#101313",
+          muted: "rgba(16,19,19,.58)",
+          border: "rgba(0,0,0,.1)"
+        };
+      }
+
+      return {
+        text: "#ffffff",
+        muted: "rgba(255,255,255,.68)",
+        border: "rgba(255,255,255,.16)"
+      };
     }
 
     function formatDate(dateString) {
-      const date = new Date(String(dateString) + "T00:00:00");
-      if (Number.isNaN(date.getTime())) return String(dateString ?? "");
+
+      const date =
+        new Date(String(dateString) + "T00:00:00");
+
+      if (Number.isNaN(date.getTime())) {
+        return String(dateString ?? "");
+      }
+
       return date.toLocaleDateString("en-US", {
         year: "numeric",
         month: "short",
@@ -907,135 +1143,211 @@
     }
 
     function formatInline(text) {
+
       let safe = escapeHtml(text);
 
-      safe = safe.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
-      safe = safe.replace(/\*(?!\s)(.+?)(?<!\s)\*/g, "<em>$1</em>");
+      safe = safe.replace(
+        /\*\*(.+?)\*\*/g,
+        "<strong>$1</strong>"
+      );
+
+      safe = safe.replace(
+        /\*(?!\s)(.+?)(?<!\s)\*/g,
+        "<em>$1</em>"
+      );
 
       return safe;
     }
 
     function renderContent(content) {
-      if (!Array.isArray(content)) return "";
-      return content.map(paragraph => `<p>${formatInline(paragraph)}</p>`).join("");
+
+      if (!Array.isArray(content)) {
+        return "";
+      }
+
+      return content
+        .map(paragraph => `<p>${formatInline(paragraph)}</p>`)
+        .join("");
     }
 
     function extractYouTubeId(url) {
+
       if (!url) return "";
 
       try {
+
         const parsed = new URL(url);
         const host = parsed.hostname.replace(/^www\./, "");
 
         if (host === "youtu.be") {
-          return parsed.pathname.split("/").filter(Boolean)[0] || "";
+          return parsed.pathname
+            .split("/")
+            .filter(Boolean)[0] || "";
         }
 
-        if (host === "youtube.com" || host === "m.youtube.com") {
+        if (
+          host === "youtube.com" ||
+          host === "m.youtube.com"
+        ) {
+
           if (parsed.pathname === "/watch") {
             return parsed.searchParams.get("v") || "";
           }
 
-          const parts = parsed.pathname.split("/").filter(Boolean);
+          const parts =
+            parsed.pathname
+              .split("/")
+              .filter(Boolean);
 
-          if (parts[0] === "embed" || parts[0] === "shorts") {
+          if (
+            parts[0] === "embed" ||
+            parts[0] === "shorts"
+          ) {
             return parts[1] || "";
           }
         }
+
       } catch (_) {}
 
       return "";
     }
 
     async function loadBlogFiles() {
+
       try {
-        const indexResponse = await fetch("index.json", { cache: "no-cache" });
+
+        const indexResponse =
+          await fetch("index.json", {
+            cache: "no-cache"
+          });
 
         if (!indexResponse.ok) {
           throw new Error("Could not load index.json");
         }
 
-        const indexData = await indexResponse.json();
+        const indexData =
+          await indexResponse.json();
 
         if (!Array.isArray(indexData.posts)) {
-          throw new Error("index.json must contain a posts array");
+          throw new Error(
+            "index.json must contain a posts array"
+          );
         }
 
-        const results = await Promise.allSettled(
-          indexData.posts.map(fileName =>
-            fetch(fileName).then(response => {
-              if (!response.ok) throw new Error(`Could not load ${fileName}`);
-              return response.json();
-            })
-          )
-        );
+        const results =
+          await Promise.allSettled(
+            indexData.posts.map(fileName =>
+              fetch(fileName)
+                .then(response => {
 
-        state.blogs = results
-          .filter(result => result.status === "fulfilled")
-          .map(result => result.value);
+                  if (!response.ok) {
+                    throw new Error(
+                      `Could not load ${fileName}`
+                    );
+                  }
 
-        const failed = results.filter(result => result.status === "rejected");
+                  return response.json();
+                })
+            )
+          );
 
-        if (failed.length) {
-          console.warn(`${failed.length} blog file(s) could not be loaded.`);
-        }
+        state.blogs =
+          results
+            .filter(result => result.status === "fulfilled")
+            .map(result => result.value);
 
         renderCategories();
         renderBlogs();
+
       } catch (error) {
+
         console.error(error);
+
         $("#blog-grid").innerHTML =
           '<p class="loading">Unable to load the blog data. Check index.json and the listed post files.</p>';
       }
     }
 
     function renderCategories() {
-      const categorySet = new Set(
-        state.blogs
-          .map(blog => blog.category)
-          .filter(Boolean)
-      );
 
-      const categories = ["All", ...categorySet];
+      const categorySet =
+        new Set(
+          state.blogs
+            .map(blog => blog.category)
+            .filter(Boolean)
+        );
 
-      $("#categories").innerHTML = categories.map(category => `
-        <button
-          class="cat-btn ${category === state.activeCategory ? "active" : ""}"
-          data-category="${escapeHtml(category)}"
-        >
-          ${escapeHtml(category)}
-        </button>
-      `).join("");
+      const categories =
+        ["All", ...categorySet];
 
-      $("#categories").querySelectorAll(".cat-btn").forEach(button => {
-        button.addEventListener("click", () => {
-          state.activeCategory = button.dataset.category;
-          renderCategories();
-          renderBlogs();
+      $("#categories").innerHTML =
+        categories.map(category => `
+          <button
+            class="cat-btn ${
+              category === state.activeCategory
+                ? "active"
+                : ""
+            }"
+            data-category="${escapeHtml(category)}"
+          >
+            ${escapeHtml(category)}
+          </button>
+        `).join("");
+
+      $("#categories")
+        .querySelectorAll(".cat-btn")
+        .forEach(button => {
+
+          button.addEventListener("click", () => {
+
+            state.activeCategory =
+              button.dataset.category;
+
+            renderCategories();
+            renderBlogs();
+
+          });
+
         });
-      });
     }
 
     function renderBlogs() {
-      const query = state.searchQuery.trim().toLowerCase();
 
-      let filtered = state.blogs.filter(blog => {
-        const categoryMatch =
-          state.activeCategory === "All" ||
-          blog.category === state.activeCategory;
+      const query =
+        state.searchQuery.trim().toLowerCase();
 
-        const searchable = [
-          blog.title,
-          blog.category,
-          Array.isArray(blog.content) ? blog.content.join(" ") : ""
-        ].join(" ").toLowerCase();
+      let filtered =
+        state.blogs.filter(blog => {
 
-        return categoryMatch && (!query || searchable.includes(query));
-      });
+          const categoryMatch =
+            state.activeCategory === "All" ||
+            blog.category === state.activeCategory;
+
+          const searchable =
+            [
+              blog.title,
+              blog.category,
+              Array.isArray(blog.content)
+                ? blog.content.join(" ")
+                : ""
+            ]
+              .join(" ")
+              .toLowerCase();
+
+          return (
+            categoryMatch &&
+            (!query || searchable.includes(query))
+          );
+        });
 
       filtered.sort((a, b) => {
-        const dateA = new Date(String(a.date) + "T00:00:00");
-        const dateB = new Date(String(b.date) + "T00:00:00");
+
+        const dateA =
+          new Date(String(a.date) + "T00:00:00");
+
+        const dateB =
+          new Date(String(b.date) + "T00:00:00");
+
         return state.sortOrder === "newest"
           ? dateB - dateA
           : dateA - dateB;
@@ -1045,6 +1357,7 @@
       const empty = $("#empty-state");
 
       if (!filtered.length) {
+
         grid.innerHTML = "";
         empty.classList.add("show");
         return;
@@ -1052,159 +1365,332 @@
 
       empty.classList.remove("show");
 
-      grid.innerHTML = filtered.map((blog, index) => {
-        const text = Array.isArray(blog.content)
-          ? blog.content.join(" ")
-          : "";
+      grid.innerHTML =
+        filtered.map((blog, index) => {
 
-        const preview = text.length > 145
-          ? text.slice(0, 145) + "…"
-          : text;
+          const color =
+            safeColor(blog.color);
 
-        return `
-          <div class="card-wrap">
-            <article
-              class="blog-card card-in"
-              style="background:${safeColor(blog.color)}; color:${getReadableTextColor(blog.color)}; animation-delay:${index * 70}ms"
-              data-id="${escapeHtml(blog.id)}"
-              tabindex="0"
-              role="button"
-              aria-label="Open ${escapeHtml(blog.title)}"
-            >
-              <div class="card-top">
-                <span class="category-pill">${escapeHtml(blog.category)}</span>
-                <span class="card-date">${escapeHtml(formatDate(blog.date))}</span>
-              </div>
+          const colors =
+            getReadableTextColors(color);
 
-              <h2>${escapeHtml(blog.title)}</h2>
+          const text =
+            Array.isArray(blog.content)
+              ? blog.content.join(" ")
+              : "";
 
-              <p class="preview">${formatInline(preview)}</p>
+          const preview =
+            text.length > 145
+              ? text.slice(0, 145) + "…"
+              : text;
 
-              <div class="card-footer">
-                <span>Read note</span>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M7 17L17 7M17 7H7m10 0v10"/>
-                </svg>
-              </div>
-            </article>
-          </div>
-        `;
-      }).join("");
+          return `
+            <div class="card-wrap">
 
-      grid.querySelectorAll("[data-id]").forEach(card => {
-        const open = () => openArticle(card.dataset.id);
+              <article
+                class="blog-card card-in"
+                style="
+                  background:${color};
+                  --card-text:${colors.text};
+                  --card-muted:${colors.muted};
+                  --card-border:${colors.border};
+                  animation-delay:${index * 70}ms
+                "
+                data-id="${escapeHtml(blog.id)}"
+                tabindex="0"
+                role="button"
+                aria-label="Open ${escapeHtml(blog.title)}"
+              >
 
-        card.addEventListener("click", open);
-        card.addEventListener("keydown", event => {
-          if (event.key === "Enter" || event.key === " ") {
-            event.preventDefault();
-            open();
-          }
+                <div class="card-top">
+
+                  <span class="category-pill">
+                    ${escapeHtml(blog.category)}
+                  </span>
+
+                  <span class="card-date">
+                    ${escapeHtml(formatDate(blog.date))}
+                  </span>
+
+                </div>
+
+                <h2>
+                  ${escapeHtml(blog.title)}
+                </h2>
+
+                <p class="preview">
+                  ${formatInline(preview)}
+                </p>
+
+                <div class="card-footer">
+
+                  <span>Read note</span>
+
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M7 17L17 7M17 7H7m10 0v10"/>
+                  </svg>
+
+                </div>
+
+              </article>
+
+            </div>
+          `;
+
+        }).join("");
+
+      grid
+        .querySelectorAll("[data-id]")
+        .forEach(card => {
+
+          const open =
+            () => openArticle(card.dataset.id);
+
+          card.addEventListener("click", open);
+
+          card.addEventListener("keydown", event => {
+
+            if (
+              event.key === "Enter" ||
+              event.key === " "
+            ) {
+
+              event.preventDefault();
+              open();
+
+            }
+          });
+
         });
-      });
     }
 
     function openArticle(blogId) {
-      const blog = state.blogs.find(item => item.id === blogId);
+
+      const blog =
+        state.blogs.find(item => item.id === blogId);
+
       if (!blog) return;
 
-      const color = safeColor(blog.color);
-      const article = $("#article-body");
+      const color =
+        safeColor(blog.color);
 
-      article.style.background = color;
-      article.style.color = getReadableTextColor(color);
+      const textColors =
+        getReadableTextColors(color);
+
+      const article =
+        $("#article-body");
+
+      article.style.setProperty(
+        "--article-bg",
+        color
+      );
+
+      article.style.setProperty(
+        "--article-text",
+        textColors.text
+      );
+
+      article.style.setProperty(
+        "--article-muted",
+        textColors.muted
+      );
 
       article.innerHTML = `
+
         <div class="article-meta">
-          <span>${escapeHtml(blog.category)}</span>
+
+          <span>
+            ${escapeHtml(blog.category)}
+          </span>
+
           <span>•</span>
-          <span>${escapeHtml(formatDate(blog.date))}</span>
+
+          <span>
+            ${escapeHtml(formatDate(blog.date))}
+          </span>
+
         </div>
 
-        <h1 id="modal-title">${escapeHtml(blog.title)}</h1>
+        <h1 id="modal-title">
+          ${escapeHtml(blog.title)}
+        </h1>
 
         <div class="article-content">
           ${renderContent(blog.content)}
         </div>
+
       `;
 
-      article.querySelector(".article-content").style.color = getReadableTextColor(color);
+      /* VIDEO */
 
-      const videoSection = $("#video-section");
-      const videoId = extractYouTubeId(blog.youtube);
+      const videoSection =
+        $("#video-section");
+
+      const videoId =
+        extractYouTubeId(blog.youtube);
 
       if (videoId) {
+
         videoSection.classList.remove("hidden");
+
         $("#video-thumb").src =
           `https://img.youtube.com/vi/${encodeURIComponent(videoId)}/hqdefault.jpg`;
-        $("#video-link").href = blog.youtube;
+
+        $("#video-link").href =
+          blog.youtube;
+
       } else {
+
         videoSection.classList.add("hidden");
-        $("#video-thumb").removeAttribute("src");
-        $("#video-link").removeAttribute("href");
+
+        $("#video-thumb")
+          .removeAttribute("src");
+
+        $("#video-link")
+          .removeAttribute("href");
       }
 
-      const sourcesSection = $("#sources-section");
-      const sourcesList = $("#sources-list");
+      /* SOURCES */
 
-      if (Array.isArray(blog.sources) && blog.sources.length) {
+      const sourcesSection =
+        $("#sources-section");
+
+      const sourcesList =
+        $("#sources-list");
+
+      if (
+        Array.isArray(blog.sources) &&
+        blog.sources.length
+      ) {
+
         sourcesSection.classList.remove("hidden");
 
-        sourcesList.innerHTML = blog.sources.map(source => `
-          <a
-            class="source-link"
-            href="${escapeHtml(source.link)}"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            ${escapeHtml(source.name)}
-          </a>
-        `).join("");
+        sourcesList.innerHTML =
+          blog.sources.map(source => `
+
+            <a
+              class="source-link"
+              href="${escapeHtml(source.link)}"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              ${escapeHtml(source.name)}
+            </a>
+
+          `).join("");
+
       } else {
+
         sourcesSection.classList.add("hidden");
         sourcesList.innerHTML = "";
       }
 
+      $("#modal").scrollTop = 0;
+      $(".modal-article").scrollTop = 0;
+      $(".sources-list").scrollTop = 0;
+
       $("#modal").classList.add("show");
       document.body.classList.add("modal-open");
-      $(".modal-article").scrollTop = 0;
     }
 
     function closeModal() {
+
       $("#modal").classList.remove("show");
       document.body.classList.remove("modal-open");
+
     }
 
-    $("#close-modal").addEventListener("click", closeModal);
+    $("#close-modal")
+      .addEventListener("click", closeModal);
 
-    $("#modal").addEventListener("click", event => {
-      if (event.target === $("#modal")) closeModal();
-    });
+    $("#modal")
+      .addEventListener("click", event => {
+
+        if (event.target === $("#modal")) {
+          closeModal();
+        }
+
+      });
 
     document.addEventListener("keydown", event => {
-      if (event.key === "Escape") closeModal();
+
+      if (event.key === "Escape") {
+        closeModal();
+      }
+
     });
 
-    $("#search-input").addEventListener("input", event => {
-      state.searchQuery = event.target.value;
-      $("#clear-search").classList.toggle("show", Boolean(state.searchQuery));
-      renderBlogs();
-    });
+    /* SEARCH */
 
-    $("#clear-search").addEventListener("click", () => {
-      $("#search-input").value = "";
-      state.searchQuery = "";
-      $("#clear-search").classList.remove("show");
-      renderBlogs();
-      $("#search-input").focus();
-    });
+    $("#search-input")
+      .addEventListener("input", event => {
 
-    $("#sort-select").addEventListener("change", event => {
-      state.sortOrder = event.target.value;
-      renderBlogs();
+        state.searchQuery =
+          event.target.value;
+
+        $("#clear-search")
+          .classList.toggle(
+            "show",
+            Boolean(state.searchQuery)
+          );
+
+        renderBlogs();
+
+      });
+
+    $("#clear-search")
+      .addEventListener("click", () => {
+
+        $("#search-input").value = "";
+        state.searchQuery = "";
+
+        $("#clear-search")
+          .classList.remove("show");
+
+        renderBlogs();
+        $("#search-input").focus();
+
+      });
+
+    /* SORT */
+
+    $("#sort-select")
+      .addEventListener("change", event => {
+
+        state.sortOrder =
+          event.target.value;
+
+        renderBlogs();
+
+      });
+
+    /* BACK TO TOP */
+
+    const backToTop =
+      $("#back-to-top");
+
+    window.addEventListener("scroll", () => {
+
+      if (window.scrollY > 450) {
+        backToTop.classList.add("show");
+      } else {
+        backToTop.classList.remove("show");
+      }
+
+    }, { passive: true });
+
+    backToTop.addEventListener("click", () => {
+
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+
     });
 
     loadBlogFiles();
+
   </script>
+
 </body>
 </html>
