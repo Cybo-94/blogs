@@ -1,430 +1,1696 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="CYBO Blog - Ideas, observations, experiments, and questions worth carrying forward.">
   <title>CYBO — Blog</title>
+  <link rel="icon" type="image/png" href="https://i.imgur.com/nrOMBEp.png">
 
-  <!-- FAVICON -->
-  <link rel="icon" type="image/png" href="https://imgur.com/dqV1mDV.png">
-
-  <!-- TAILWIND CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
-
-  <!-- ICONIFY -->
-  <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
-
-  <!-- BLOG CSS -->
-  <link rel="stylesheet" href="blog.css">
-
-  <!-- MAIN WEBSITE FONTS -->
   <style>
-    @import url('https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@800,900&f[]=satoshi@400,500,700&f[]=crimson-pro@600&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800&display=swap');
 
-    .font-display {
-      font-family: 'Cabinet Grotesk', sans-serif;
+    :root {
+      --ink: #080909;
+      --line: rgba(255,255,255,.12);
+      --cyan: #8ef2ff;
+    }
+
+    * { box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+      background: var(--ink);
     }
 
     body {
-      font-family: 'Satoshi', sans-serif;
+      margin: 0;
+      overflow-x: hidden;
+      background:
+        linear-gradient(
+          135deg,
+          rgba(0,242,255,.055) 0%,
+          transparent 34%,
+          rgba(255,0,255,.045) 68%,
+          transparent 100%
+        ),
+        var(--ink);
+      background-attachment: fixed;
+      color: #fff;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
 
-    .footer-full {
-      background: #000000;
-      width: 100vw;
+    body.modal-open { overflow: hidden; }
+
+    .orbitron { font-family: "Orbitron", sans-serif; }
+
+    .topbar {
+      position: fixed;
+      inset: 0 0 auto;
+      z-index: 40;
+      height: 76px;
+      background: rgba(8,9,9,.96);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .topbar-inner,
+    .subbar-inner,
+    .main-inner,
+    .footer-inner {
+      width: min(1440px, calc(100% - 40px));
+      margin: auto;
+    }
+
+    .topbar-inner {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .left-controls,
+    .top-controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .back-button {
+      height: 44px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0 16px;
+      border: 1px solid rgba(255,255,255,.15);
+      border-radius: 9px;
+      background: rgba(255,255,255,.04);
+      color: #fff;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+      transition: .25s ease;
+    }
+
+    .back-button:hover {
+      border-color: rgba(142,242,255,.7);
+      background: rgba(255,255,255,.1);
+    }
+
+    .brand-logo {
+      width: 44px;
+      height: 44px;
+      object-fit: contain;
+      border-radius: 8px;
+    }
+
+    .search-shell {
+      width: 280px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0 12px;
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      background: rgba(255,255,255,.045);
+      transition: width .3s ease, border-color .3s ease, background .3s ease;
+    }
+
+    .search-shell:focus-within {
+      width: 350px;
+      border-color: rgba(142,242,255,.7);
+      background: rgba(142,242,255,.07);
+    }
+
+    #search-input {
+      min-width: 0;
+      flex: 1;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      color: #fff;
+      font-size: 14px;
+    }
+
+    #search-input::placeholder {
+      color: rgba(255,255,255,.4);
+    }
+
+    .clear-search {
+      width: 44px;
+      height: 44px;
+      display: none;
+      place-items: center;
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      background: transparent;
+      color: rgba(255,255,255,.55);
+      cursor: pointer;
+    }
+
+    .clear-search.show { display: grid; }
+
+    .subbar {
+      position: fixed;
+      top: 76px;
+      left: 0;
+      right: 0;
+      z-index: 30;
+      background: rgba(13,15,15,.98);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .subbar-inner {
+      min-height: 57px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .subbar-inner::-webkit-scrollbar { display: none; }
+
+    #categories {
+      display: flex;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    .cat-btn {
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 999px;
+      padding: 8px 16px;
+      background: rgba(255,255,255,.04);
+      color: rgba(255,255,255,.65);
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: .2s ease;
+    }
+
+    .cat-btn:hover { background: rgba(255,255,255,.1); }
+
+    .cat-btn.active {
+      border-color: var(--cyan);
+      background: var(--cyan);
+      color: #000;
+    }
+
+    .sort-wrap {
+      height: 44px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+      padding-left: 16px;
+      border-left: 1px solid var(--line);
+    }
+
+    .sort-label {
+      color: rgba(255,255,255,.35);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+    }
+
+    #sort-select {
+      width: auto;
+      min-width: 105px;
+      height: 44px;
+      padding: 0 10px;
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 9px;
+      background: #171919;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 600;
+      outline: 0;
+    }
+
+    .main {
+      padding: 154px 0 96px;
+    }
+
+    .intro {
+      max-width: 760px;
+      margin-bottom: 48px;
+    }
+
+    .eyebrow {
+      margin: 0 0 16px;
+      color: var(--cyan);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .28em;
+      text-transform: uppercase;
+    }
+
+    .intro h1 {
+      margin: 0;
+      color: #fff;
+      font-family: "Orbitron", sans-serif;
+      font-size: clamp(40px, 6vw, 72px);
+      line-height: 1;
+      letter-spacing: -.05em;
+    }
+
+    .intro h1 span { color: var(--cyan); }
+
+    .intro p {
+      max-width: 620px;
+      margin: 20px 0 0;
+      color: rgba(255,255,255,.55);
+      font-size: 16px;
+      line-height: 1.75;
+    }
+
+    .masonry {
+      column-count: 3;
+      column-gap: 24px;
+    }
+
+    .card-wrap {
+      break-inside: avoid;
+      margin-bottom: 24px;
+    }
+
+    .blog-card {
+      --card-text: #101313;
+      --card-muted: rgba(16,19,19,.58);
+      --card-border: rgba(0,0,0,.1);
+
+      width: 100%;
+      padding: 24px;
+      border-radius: 16px;
+      color: var(--card-text);
+      cursor: pointer;
+      transition: transform .28s ease, box-shadow .28s ease, filter .28s ease;
+    }
+
+    .blog-card:hover {
+      transform: translateY(-7px) rotate(-.35deg);
+      box-shadow: 0 20px 45px rgba(0,0,0,.3);
+      filter: saturate(1.08);
+    }
+
+    .card-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 36px;
+    }
+
+    .category-pill {
+      padding: 5px 10px;
+      border-radius: 999px;
+      background: rgba(0,0,0,.1);
+      color: var(--card-text);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+    }
+
+    .card-date {
+      color: var(--card-muted);
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .blog-card h2 {
+      margin: 0;
+      color: var(--card-text);
+      font-family: "Orbitron", sans-serif;
+      font-size: 20px;
+      line-height: 1.25;
+    }
+
+    .blog-card .preview {
+      margin: 20px 0 0;
+      color: var(--card-muted);
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .blog-card .preview strong,
+    .blog-card .preview em {
+      color: var(--card-text);
+    }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 32px;
+      padding-top: 14px;
+      border-top: 1px solid var(--card-border);
+      color: var(--card-muted);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .card-in {
+      animation: cardIn .5s ease both;
+    }
+
+    @keyframes cardIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: none; }
+    }
+
+    .empty-state {
+      display: none;
+      padding: 80px 0;
+      text-align: center;
+      color: rgba(255,255,255,.45);
+      font-size: 14px;
+    }
+
+    .empty-state.show { display: block; }
+
+    /* FOOTER */
+
+    footer {
+      width: 100%;
+      padding: 48px 40px;
+      border-top: 1px solid rgba(255,255,255,.1);
+      background: #000;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      margin-bottom: 32px;
+    }
+
+    .footer-brand-block {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .footer-brand-title {
+      margin: 0 0 8px;
+      color: #fff;
+      font-family: "Orbitron", sans-serif;
+      font-size: 30px;
+      font-weight: 900;
+      letter-spacing: -.06em;
+      line-height: 1.1;
+    }
+
+    .footer-description {
+      max-width: 344px;
+      margin: 0;
+      color: #9ca3af;
+      font-size: 15px;
+      line-height: 1.5;
+    }
+
+    .footer-contact {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      text-align: right;
+    }
+
+    .footer-contact-label {
+      margin: 0 0 8px;
+      color: #6b7280;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+    }
+
+    .footer-contact-email {
+      color: #22d3ee;
+      font-family: "Orbitron", sans-serif;
+      font-size: clamp(20px, 2.4vw, 30px);
+      font-weight: 900;
+      text-decoration: none;
+      transition: color .2s ease;
+      overflow-wrap: anywhere;
+    }
+
+    .footer-contact-email:hover { color: #67e8f9; }
+
+    .footer-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding-top: 32px;
+      border-top: 1px solid rgba(255,255,255,.05);
+      color: #4b5563;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: .16em;
+    }
+
+    .footer-bottom p { margin: 0; }
+
+    /* READING MODE */
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: none;
+      overflow-y: auto;
+      padding: 40px;
+      background: rgba(0,0,0,.82);
+      backdrop-filter: blur(10px);
+    }
+
+    .modal-backdrop.show { display: block; }
+
+    .modal-panel {
+      width: min(1150px, 100%);
+      margin: auto;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 18px;
+      background: #2f3133;
+      box-shadow: 0 30px 80px rgba(0,0,0,.5);
+      animation: rise .3s ease both;
+    }
+
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(18px) scale(.98); }
+      to { opacity: 1; transform: none; }
+    }
+
+    .modal-header {
+      height: 58px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      background: #2a2c2e;
+      border-bottom: 1px solid rgba(255,255,255,.1);
+    }
+
+    .reading-room {
+      color: rgba(255,255,255,.68);
+      font-family: "Orbitron", sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+    }
+
+    .close-modal {
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 9px;
+      background: rgba(255,255,255,.06);
+      color: rgba(255,255,255,.78);
+      cursor: pointer;
+      transition: .2s ease;
+    }
+
+    .close-modal:hover {
+      background: rgba(255,255,255,.13);
+      color: #fff;
+      transform: scale(1.03);
+    }
+
+    .modal-grid {
+      display: grid;
+      grid-template-columns: minmax(0,1fr) 310px;
+    }
+
+    .modal-article {
+      max-height: 72vh;
+      overflow-y: auto;
+      padding: 48px;
+      background: var(--article-bg);
+      color: var(--article-text);
+    }
+
+    .modal-article::-webkit-scrollbar { width: 6px; }
+
+    .modal-article::-webkit-scrollbar-thumb {
+      background: rgba(0,0,0,.25);
+      border-radius: 20px;
+    }
+
+    .article-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 28px;
+      color: var(--article-muted);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    .modal-article h1 {
+      margin: 0;
+      color: var(--article-text);
+      font-family: "Orbitron", sans-serif;
+      font-size: clamp(32px, 5vw, 52px);
+      line-height: 1.12;
+    }
+
+    .article-content {
+      margin-top: 38px;
+      color: var(--article-text);
+      font-size: 16px;
+      line-height: 2;
+    }
+
+    .article-content p { margin: 0 0 22px; }
+
+    /* SIDEBAR */
+
+    .modal-sidebar {
+      height: 72vh;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      padding: 28px 30px;
+      background: #5b5b5b;
+      border-left: 1px solid rgba(0,0,0,.18);
+      color: #fff;
+    }
+
+    .sidebar-section h2 {
+      margin: 0;
+      color: #fff;
+      font-family: "Orbitron", sans-serif;
+      font-size: 14px;
+      line-height: 1.4;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+    }
+
+    .video-section {
+      flex: 0 0 auto;
+    }
+
+    .video-link {
       position: relative;
-      left: 50%;
-      margin-left: -50vw;
+      display: block;
+      margin-top: 18px;
+      overflow: hidden;
+      border: 1px solid rgba(0,0,0,.18);
+      border-radius: 12px;
+    }
+
+    .video-link img {
+      display: block;
+      width: 100%;
+      aspect-ratio: 16/9;
+      object-fit: cover;
+      transition: transform .3s ease;
+    }
+
+    .video-link:hover img { transform: scale(1.05); }
+
+    .play-button {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      background: rgba(0,0,0,.2);
+    }
+
+    .play-button span {
+      width: 48px;
+      height: 48px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: #fff;
+      color: #000;
+    }
+
+    .sources-section {
+      min-height: 0;
+      flex: 1 1 auto;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      margin-top: 28px;
+      padding-top: 24px;
+      border-top: 1px solid rgba(255,255,255,.35);
+    }
+
+    .sources-list {
+      min-height: 0;
+      overflow-y: auto;
+      display: grid;
+      align-content: start;
+      gap: 8px;
+      margin-top: 16px;
+      padding-right: 6px;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255,255,255,.4) transparent;
+    }
+
+    .sources-list::-webkit-scrollbar { width: 6px; }
+
+    .sources-list::-webkit-scrollbar-thumb {
+      background: rgba(255,255,255,.35);
+      border-radius: 20px;
+    }
+
+    .source-link {
+      display: block;
+      padding: 12px;
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 9px;
+      background: rgba(0,0,0,.22);
+      color: #fff;
+      font-size: 14px;
+      line-height: 1.45;
+      text-decoration: none;
+      transition: .2s ease;
+    }
+
+    .source-link:hover {
+      background: rgba(0,0,0,.36);
+      border-color: rgba(255,255,255,.22);
+      transform: translateX(3px);
+    }
+
+    .hidden { display: none !important; }
+
+    /* BACK TO TOP */
+
+    #back-to-top {
+      position: fixed;
+      right: 28px;
+      bottom: 28px;
+      z-index: 80;
+      width: 46px;
+      height: 46px;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(255,255,255,.16);
+      border-radius: 50%;
+      background: rgba(20,22,22,.9);
+      color: #fff;
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transform: translateY(12px);
+      transition: opacity .25s ease, visibility .25s ease, transform .25s ease, background .2s ease;
+      backdrop-filter: blur(8px);
+    }
+
+    #back-to-top.show {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+
+    #back-to-top:hover {
+      background: #fff;
+      color: #000;
+    }
+
+    .loading {
+      padding: 60px 0;
+      text-align: center;
+      color: rgba(255,255,255,.45);
+      font-size: 14px;
+    }
+
+    @media (max-width: 1024px) {
+      .masonry { column-count: 2; }
+
+      .search-shell { width: 220px; }
+
+      .search-shell:focus-within { width: 260px; }
+    }
+
+    @media (max-width: 700px) {
+      .topbar-inner,
+      .subbar-inner,
+      .main-inner,
+      .footer-inner {
+        width: min(100% - 24px, 1440px);
+      }
+
+      .topbar { height: 68px; }
+
+      .subbar { top: 68px; }
+
+      .back-button {
+        width: 44px;
+        padding: 0;
+        justify-content: center;
+      }
+
+      .back-button span { display: none; }
+
+      .brand-logo {
+        width: 38px;
+        height: 38px;
+      }
+
+      .search-shell {
+        width: 44px;
+        padding: 0;
+        justify-content: center;
+      }
+
+      .search-shell:focus-within { width: 44px; }
+
+      #search-input { display: none; }
+
+      .top-controls { gap: 8px; }
+
+      .sort-wrap {
+        padding-left: 0;
+        border-left: 0;
+      }
+
+      .sort-label { display: none; }
+
+      #sort-select {
+        width: 44px;
+        min-width: 44px;
+        height: 44px;
+        padding: 0 5px;
+      }
+
+      .main { padding-top: 140px; }
+
+      .masonry { column-count: 1; }
+
+      .modal-backdrop { padding: 12px; }
+
+      .modal-grid { grid-template-columns: 1fr; }
+
+      .modal-article {
+        max-height: none;
+        padding: 28px 22px;
+      }
+
+      .modal-sidebar {
+        height: auto;
+        overflow: visible;
+        padding: 24px 22px;
+        border-left: 0;
+        border-top: 1px solid rgba(255,255,255,.14);
+      }
+
+      .sources-section { max-height: 280px; }
+
+      #back-to-top {
+        right: 18px;
+        bottom: 18px;
+      }
+
+      footer { padding: 48px 24px; }
+
+      .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 28px;
+      }
+
+      .footer-brand-block,
+      .footer-contact {
+        align-items: center;
+        text-align: center;
+      }
+
+      .footer-bottom {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .footer-crafted { display: none; }
     }
   </style>
 </head>
 
 <body>
 
-  <div class="min-h-screen bg-[#080909]">
+  <header class="topbar">
+    <div class="topbar-inner">
 
-    <!-- ============================================================
-         TOP NAVIGATION BAR
-         ============================================================ -->
+      <div class="left-controls">
+        <a
+          class="back-button"
+          href="https://cybo-94.github.io/og-sites/"
+          aria-label="Back to CYBO"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M19 12H5M12 19l-7-7 7-7"/>
+          </svg>
+          <span>Back</span>
+        </a>
 
-    <header class="topbar fixed top-0 left-0 right-0 z-40">
-
-      <div class="mx-auto flex h-[76px] max-w-[1440px] items-center justify-between gap-5 px-5 md:px-10">
-
-        <!-- LEFT: BACK BUTTON + LOGO -->
-
-        <div class="flex min-w-0 items-center gap-3">
-
-          <a
-            id="back-home-link"
-            href="https://cybo-94.github.io/og-sites/"
-            class="inline-flex h-11 items-center gap-2 rounded-lg border border-white/15 bg-white/[.04] px-4 text-sm font-semibold text-white transition hover:border-cyan-200/70 hover:bg-white/10"
-            aria-label="Back to CYBO home"
-          >
-
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M19 12H5M12 19l-7-7 7-7"/>
-            </svg>
-
-            <span>Back</span>
-
-          </a>
-
-          <!-- UPDATED CYBO LOGO -->
-
-          <img
-            class="brand-logo h-11 w-11 rounded-lg object-contain"
-            src="https://imgur.com/dqV1mDV.png"
-            alt="CYBO logo"
-          >
-
-        </div>
-
-
-        <!-- RIGHT: SEARCH -->
-
-        <div class="top-controls flex items-center gap-3">
-
-          <label
-            class="search-shell glass flex h-11 items-center gap-2 rounded-lg px-3"
-            for="search-input"
-          >
-
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-white/55 shrink-0">
-              <circle cx="11" cy="11" r="8"></circle>
-              <path d="m21 21-4.35-4.35"></path>
-            </svg>
-
-            <input
-              id="search-input"
-              class="desktop-search min-w-0 flex-1 bg-transparent text-sm text-white outline-none placeholder:text-white/40"
-              type="search"
-              placeholder="Search ideas..."
-              autocomplete="off"
-            >
-
-          </label>
-
-          <button
-            id="clear-search"
-            class="hidden h-11 w-11 items-center justify-center rounded-lg border border-white/10 text-white/55 transition hover:bg-white/10"
-            aria-label="Clear search"
-          >
-
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <line x1="18" y1="6" x2="6" y2="18"></line>
-              <line x1="6" y1="6" x2="18" y2="18"></line>
-            </svg>
-
-          </button>
-
-        </div>
-
+        <img
+          class="brand-logo"
+          src="https://i.imgur.com/nrOMBEp.png"
+          alt="CYBO logo"
+        >
       </div>
 
-    </header>
+      <div class="top-controls">
 
+        <label class="search-shell" for="search-input">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"/>
+            <path d="m21 21-4.35-4.35"/>
+          </svg>
 
-    <!-- ============================================================
-         CATEGORY FILTER + SORT BAR
-         ============================================================ -->
-
-    <div class="subbar fixed left-0 right-0 top-[76px] z-30">
-
-      <div class="mx-auto flex max-w-[1440px] items-center gap-5 overflow-x-auto px-5 py-3 md:px-10">
-
-        <div id="categories" class="flex shrink-0 items-center gap-2"></div>
-
-        <div class="ml-auto flex shrink-0 items-center gap-2 border-l border-white/10 pl-4">
-
-          <span class="hidden text-[10px] font-bold uppercase tracking-[.18em] text-white/35 sm:inline">
-            Sort
-          </span>
-
-          <select
-            id="sort-select"
-            class="rounded-md border border-white/10 bg-[#171919] px-3 py-2 text-xs font-semibold text-white outline-none focus:border-cyan-200/70"
+          <input
+            id="search-input"
+            type="search"
+            placeholder="Search ideas..."
+            autocomplete="off"
           >
+        </label>
 
+        <button id="clear-search" class="clear-search" aria-label="Clear search">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+
+        <div class="sort-wrap">
+          <span class="sort-label">Sort</span>
+
+          <select id="sort-select" aria-label="Sort posts">
             <option value="newest">Newest</option>
             <option value="oldest">Oldest</option>
-
           </select>
-
         </div>
 
       </div>
-
     </div>
+  </header>
 
+  <div class="subbar">
+    <div class="subbar-inner">
+      <div id="categories"></div>
+    </div>
+  </div>
 
-    <!-- ============================================================
-         MAIN CONTENT
-         ============================================================ -->
+  <main class="main">
+    <div class="main-inner">
 
-    <main class="mx-auto max-w-[1440px] px-5 pb-24 pt-[154px] md:px-10">
+      <section class="intro">
+        <p class="eyebrow">CYBO / Notes from the edge</p>
 
-      <section class="mb-12 max-w-3xl">
-
-        <p class="orbitron mb-4 text-[11px] font-semibold uppercase tracking-[.28em] text-[#8ef2ff]">
-          CYBO / Notes from the edge
-        </p>
-
-        <h1 class="orbitron text-4xl font-bold tracking-[-.05em] text-white md:text-6xl">
-          Ideas in motion<span class="text-[#8ef2ff]">.</span>
+        <h1>
+          Ideas in motion<span>.</span>
         </h1>
 
-        <p class="mt-5 max-w-xl text-base leading-7 text-white/55">
-          A small archive of observations, experiments, and questions worth carrying forward.
+        <p>
+          A small archive of observations, experiments,
+          and questions worth carrying forward.
         </p>
-
       </section>
 
+      <div id="blog-grid" class="masonry" aria-live="polite">
+        <div class="loading">Loading notes...</div>
+      </div>
 
-      <!-- BLOG CARDS -->
-
-      <div id="blog-grid" class="masonry" aria-live="polite"></div>
-
-      <p id="empty-state" class="hidden py-20 text-center text-sm text-white/45">
+      <p id="empty-state" class="empty-state">
         No notes match that search.
       </p>
 
-    </main>
+    </div>
+  </main>
 
+  <footer>
+    <div class="footer-inner">
 
-    <!-- ============================================================
-         FOOTER
-         MATCHED WITH MAIN CYBO WEBSITE
-         ============================================================ -->
+      <div class="footer-grid">
 
-    <footer class="footer-full py-12 px-10 md:px-20 border-t border-white/10">
+        <div class="footer-brand-block">
+          <h3 class="footer-brand-title">
+            Coolest Young Brain Online
+          </h3>
 
-      <div class="max-w-[1440px] mx-auto">
-
-        <!-- TOP FOOTER ROW -->
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-
-          <!-- BRAND DESCRIPTION -->
-
-          <div
-            class="flex flex-col items-center md:items-start text-center md:text-left"
-            style="display: flex;"
-          >
-
-            <h3 class="font-display font-black text-white text-2xl md:text-3xl mb-2 tracking-tighter whitespace-nowrap overflow-hidden text-ellipsis w-full scale-[0.8] md:scale-100 origin-center md:origin-left">
-
-              Coolest Young Brain Online
-
-            </h3>
-
-            <p
-              class="text-gray-400 max-w-sm text-[10px] md:text-xs"
-              style="font-size: 15px; width: 344px;"
-            >
-
-              Pioneering the intersection of physics, technology, and exploration.
-
-            </p>
-
-          </div>
-
-
-          <!-- BUSINESS CONTACT -->
-
-          <div class="flex flex-col items-center md:items-end text-center md:text-right">
-
-            <p class="text-[10px] uppercase font-bold tracking-[0.2em] text-gray-500 mb-2">
-
-              Direct Business Contact
-
-            </p>
-
-            <a
-              href="mailto:cybo94.buisness@gmail.com"
-              id="email-footer-main"
-              class="text-xl md:text-3xl font-display font-black text-cyan-400 hover:text-cyan-300 transition-colors"
-            >
-
-              cybo94.buisness@gmail.com
-
-            </a>
-
-          </div>
-
+          <p class="footer-description">
+            Pioneering the intersection of physics,
+            technology, and exploration.
+          </p>
         </div>
 
-
-        <!-- BOTTOM FOOTER ROW -->
-
-        <div class="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-white/5 text-gray-600 text-[10px] md:text-xs gap-4 uppercase tracking-widest">
-
-          <p>
-
-            © 2025 CYBO. ALL RIGHTS RESERVED.
-
+        <div class="footer-contact">
+          <p class="footer-contact-label">
+            Direct Business Contact
           </p>
 
-          <div class="flex flex-col items-center md:items-end gap-1">
-
-            <p>
-
-              CRAFTED IN INDIA WITH CURIOSITY
-
-            </p>
-
-            <p class="text-[8px] md:text-[9px] tracking-widest">
-
-              VERSION 1.3.2
-
-            </p>
-
-          </div>
-
+          <a
+            href="mailto:cybo94.buisness@gmail.com"
+            class="footer-contact-email"
+          >
+            cybo94.buisness@gmail.com
+          </a>
         </div>
 
       </div>
 
-    </footer>
-
-
-    <!-- ============================================================
-         ARTICLE MODAL
-         ============================================================ -->
-
-    <div
-      id="modal"
-      class="modal-backdrop fixed inset-0 z-50 hidden overflow-y-auto p-4 md:p-10"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="modal-title"
-    >
-
-      <div class="modal-panel mx-auto my-4 max-w-6xl overflow-hidden rounded-2xl border border-white/15 bg-[#151817] shadow-2xl">
-
-
-        <!-- MODAL HEADER -->
-
-        <div class="flex items-center justify-between border-b border-black/10 px-5 py-4">
-
-          <span class="orbitron text-[10px] font-bold uppercase tracking-[.2em] text-white/45">
-
-            Reading room
-
-          </span>
-
-          <button
-            id="close-modal"
-            class="flex h-10 w-10 items-center justify-center rounded-lg bg-white/10 text-white transition hover:bg-white/20"
-            aria-label="Close article"
-          >
-
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-
-              <line x1="18" y1="6" x2="6" y2="18"></line>
-              <line x1="6" y1="6" x2="18" y2="18"></line>
-
-            </svg>
-
-          </button>
-
-        </div>
-
-
-        <!-- MODAL CONTENT GRID -->
-
-        <div class="modal-grid grid grid-cols-[minmax(0,1fr)_310px] gap-0">
-
-
-          <!-- LEFT: ARTICLE -->
-
-          <article
-            id="article-body"
-            class="modal-article p-6 md:p-12"
-          ></article>
-
-
-          <!-- RIGHT: SIDEBAR -->
-
-          <aside class="border-l border-black/10 bg-black/[.13] p-6 md:p-8">
-
-
-            <!-- VIDEO SECTION -->
-
-            <section id="video-section">
-
-              <h2 class="orbitron text-sm font-bold uppercase leading-6">
-
-                VIDEO
-
-              </h2>
-
-              <a
-                id="video-link"
-                class="group relative mt-5 block overflow-hidden rounded-xl border border-white/15"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-
-                <img
-                  id="video-thumb"
-                  class="aspect-video w-full object-cover transition duration-300 group-hover:scale-105"
-                  alt="YouTube video thumbnail"
-                >
-
-                <span class="absolute inset-0 flex items-center justify-center bg-black/20">
-
-                  <span class="flex h-12 w-12 items-center justify-center rounded-full bg-white text-black">
-
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-
-                      <path d="M8 5v14l11-7z"/>
-
-                    </svg>
-
-                  </span>
-
-                </span>
-
-              </a>
-
-            </section>
-
-
-            <!-- SOURCES SECTION -->
-
-            <section id="sources-section" class="mt-10">
-
-              <h2 class="orbitron text-sm font-bold uppercase">
-
-                Sources
-
-              </h2>
-
-              <div id="sources-list" class="mt-4 space-y-2"></div>
-
-            </section>
-
-
-          </aside>
-
-        </div>
-
+      <div class="footer-bottom">
+        <p>© 2025 CYBO. ALL RIGHTS RESERVED.</p>
+        <p class="footer-crafted">CRAFTED IN INDIA WITH CURIOSITY</p>
       </div>
 
     </div>
+  </footer>
 
+  <!-- READING MODE -->
+
+  <div
+    id="modal"
+    class="modal-backdrop"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="modal-title"
+  >
+
+    <div class="modal-panel">
+
+      <div class="modal-header">
+
+        <span class="reading-room">
+          Reading Mode
+        </span>
+
+        <button
+          id="close-modal"
+          class="close-modal"
+          aria-label="Exit reading mode"
+          title="Exit Reading Mode"
+        >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+
+      </div>
+
+      <div class="modal-grid">
+
+        <article id="article-body" class="modal-article"></article>
+
+        <aside class="modal-sidebar">
+
+          <section id="video-section" class="sidebar-section video-section">
+
+            <h2>VIDEO</h2>
+
+            <a
+              id="video-link"
+              class="video-link"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img id="video-thumb" alt="YouTube video thumbnail">
+
+              <span class="play-button">
+                <span>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M8 5v14l11-7z"/>
+                  </svg>
+                </span>
+              </span>
+            </a>
+
+          </section>
+
+          <section id="sources-section" class="sidebar-section sources-section">
+
+            <h2>Sources</h2>
+
+            <div id="sources-list" class="sources-list"></div>
+
+          </section>
+
+        </aside>
+
+      </div>
+    </div>
   </div>
 
+  <!-- BACK TO TOP -->
 
-  <!-- ============================================================
-       JAVASCRIPT
-       ============================================================ -->
+  <button
+    id="back-to-top"
+    aria-label="Back to top"
+    title="Back to top"
+  >
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M12 19V5"/>
+      <path d="m5 12 7-7 7 7"/>
+    </svg>
+  </button>
 
-  <script src="blogs.js"></script>
+  <script>
 
-  <script src="blog.js"></script>
+    const state = {
+      blogs: [],
+      activeCategory: "All",
+      searchQuery: "",
+      sortOrder: "newest"
+    };
+
+    const $ = selector => document.querySelector(selector);
+
+    function escapeHtml(value) {
+      const div = document.createElement("div");
+      div.textContent = String(value ?? "");
+      return div.innerHTML;
+    }
+
+    function safeColor(value) {
+      const color = String(value ?? "");
+      return /^#[0-9a-fA-F]{6}$/.test(color)
+        ? color
+        : "#E8FFD9";
+    }
+
+    /*
+      Determines whether a blog card should use
+      black or white text from its background.
+    */
+
+    function getReadableTextColors(hex) {
+
+      const clean = hex.replace("#", "");
+
+      const r = parseInt(clean.slice(0, 2), 16) / 255;
+      const g = parseInt(clean.slice(2, 4), 16) / 255;
+      const b = parseInt(clean.slice(4, 6), 16) / 255;
+
+      const linear = value =>
+        value <= 0.03928
+          ? value / 12.92
+          : Math.pow((value + 0.055) / 1.055, 2.4);
+
+      const luminance =
+        0.2126 * linear(r) +
+        0.7152 * linear(g) +
+        0.0722 * linear(b);
+
+      if (luminance > 0.55) {
+        return {
+          text: "#101313",
+          muted: "rgba(16,19,19,.58)",
+          border: "rgba(0,0,0,.1)"
+        };
+      }
+
+      return {
+        text: "#ffffff",
+        muted: "rgba(255,255,255,.68)",
+        border: "rgba(255,255,255,.16)"
+      };
+    }
+
+    function formatDate(dateString) {
+
+      const date =
+        new Date(String(dateString) + "T00:00:00");
+
+      if (Number.isNaN(date.getTime())) {
+        return String(dateString ?? "");
+      }
+
+      return date.toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "short",
+        day: "numeric"
+      });
+    }
+
+    function formatInline(text) {
+
+      let safe = escapeHtml(text);
+
+      safe = safe.replace(
+        /\*\*(.+?)\*\*/g,
+        "<strong>$1</strong>"
+      );
+
+      safe = safe.replace(
+        /\*(?!\s)(.+?)(?<!\s)\*/g,
+        "<em>$1</em>"
+      );
+
+      return safe;
+    }
+
+    function renderContent(content) {
+
+      if (!Array.isArray(content)) {
+        return "";
+      }
+
+      return content
+        .map(paragraph => `<p>${formatInline(paragraph)}</p>`)
+        .join("");
+    }
+
+    function extractYouTubeId(url) {
+
+      if (!url) return "";
+
+      try {
+
+        const parsed = new URL(url);
+        const host = parsed.hostname.replace(/^www\./, "");
+
+        if (host === "youtu.be") {
+          return parsed.pathname
+            .split("/")
+            .filter(Boolean)[0] || "";
+        }
+
+        if (
+          host === "youtube.com" ||
+          host === "m.youtube.com"
+        ) {
+
+          if (parsed.pathname === "/watch") {
+            return parsed.searchParams.get("v") || "";
+          }
+
+          const parts =
+            parsed.pathname
+              .split("/")
+              .filter(Boolean);
+
+          if (
+            parts[0] === "embed" ||
+            parts[0] === "shorts"
+          ) {
+            return parts[1] || "";
+          }
+        }
+
+      } catch (_) {}
+
+      return "";
+    }
+
+    async function loadBlogFiles() {
+
+      try {
+
+        const indexResponse =
+          await fetch("index.json", {
+            cache: "no-cache"
+          });
+
+        if (!indexResponse.ok) {
+          throw new Error("Could not load index.json");
+        }
+
+        const indexData =
+          await indexResponse.json();
+
+        if (!Array.isArray(indexData.posts)) {
+          throw new Error(
+            "index.json must contain a posts array"
+          );
+        }
+
+        const results =
+          await Promise.allSettled(
+            indexData.posts.map(fileName =>
+              fetch(fileName)
+                .then(response => {
+
+                  if (!response.ok) {
+                    throw new Error(
+                      `Could not load ${fileName}`
+                    );
+                  }
+
+                  return response.json();
+                })
+            )
+          );
+
+        state.blogs =
+          results
+            .filter(result => result.status === "fulfilled")
+            .map(result => result.value);
+
+        renderCategories();
+        renderBlogs();
+
+      } catch (error) {
+
+        console.error(error);
+
+        $("#blog-grid").innerHTML =
+          '<p class="loading">Unable to load the blog data. Check index.json and the listed post files.</p>';
+      }
+    }
+
+    function renderCategories() {
+
+      const categorySet =
+        new Set(
+          state.blogs
+            .map(blog => blog.category)
+            .filter(Boolean)
+        );
+
+      const categories =
+        ["All", ...categorySet];
+
+      $("#categories").innerHTML =
+        categories.map(category => `
+          <button
+            class="cat-btn ${
+              category === state.activeCategory
+                ? "active"
+                : ""
+            }"
+            data-category="${escapeHtml(category)}"
+          >
+            ${escapeHtml(category)}
+          </button>
+        `).join("");
+
+      $("#categories")
+        .querySelectorAll(".cat-btn")
+        .forEach(button => {
+
+          button.addEventListener("click", () => {
+
+            state.activeCategory =
+              button.dataset.category;
+
+            renderCategories();
+            renderBlogs();
+
+          });
+
+        });
+    }
+
+    function renderBlogs() {
+
+      const query =
+        state.searchQuery.trim().toLowerCase();
+
+      let filtered =
+        state.blogs.filter(blog => {
+
+          const categoryMatch =
+            state.activeCategory === "All" ||
+            blog.category === state.activeCategory;
+
+          const searchable =
+            [
+              blog.title,
+              blog.category,
+              Array.isArray(blog.content)
+                ? blog.content.join(" ")
+                : ""
+            ]
+              .join(" ")
+              .toLowerCase();
+
+          return (
+            categoryMatch &&
+            (!query || searchable.includes(query))
+          );
+        });
+
+      filtered.sort((a, b) => {
+
+        const dateA =
+          new Date(String(a.date) + "T00:00:00");
+
+        const dateB =
+          new Date(String(b.date) + "T00:00:00");
+
+        return state.sortOrder === "newest"
+          ? dateB - dateA
+          : dateA - dateB;
+      });
+
+      const grid = $("#blog-grid");
+      const empty = $("#empty-state");
+
+      if (!filtered.length) {
+
+        grid.innerHTML = "";
+        empty.classList.add("show");
+        return;
+      }
+
+      empty.classList.remove("show");
+
+      grid.innerHTML =
+        filtered.map((blog, index) => {
+
+          const color =
+            safeColor(blog.color);
+
+          const colors =
+            getReadableTextColors(color);
+
+          const text =
+            Array.isArray(blog.content)
+              ? blog.content.join(" ")
+              : "";
+
+          const preview =
+            text.length > 145
+              ? text.slice(0, 145) + "…"
+              : text;
+
+          return `
+            <div class="card-wrap">
+
+              <article
+                class="blog-card card-in"
+                style="
+                  background:${color};
+                  --card-text:${colors.text};
+                  --card-muted:${colors.muted};
+                  --card-border:${colors.border};
+                  animation-delay:${index * 70}ms
+                "
+                data-id="${escapeHtml(blog.id)}"
+                tabindex="0"
+                role="button"
+                aria-label="Open ${escapeHtml(blog.title)}"
+              >
+
+                <div class="card-top">
+
+                  <span class="category-pill">
+                    ${escapeHtml(blog.category)}
+                  </span>
+
+                  <span class="card-date">
+                    ${escapeHtml(formatDate(blog.date))}
+                  </span>
+
+                </div>
+
+                <h2>
+                  ${escapeHtml(blog.title)}
+                </h2>
+
+                <p class="preview">
+                  ${formatInline(preview)}
+                </p>
+
+                <div class="card-footer">
+
+                  <span>Read note</span>
+
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M7 17L17 7M17 7H7m10 0v10"/>
+                  </svg>
+
+                </div>
+
+              </article>
+
+            </div>
+          `;
+
+        }).join("");
+
+      grid
+        .querySelectorAll("[data-id]")
+        .forEach(card => {
+
+          const open =
+            () => openArticle(card.dataset.id);
+
+          card.addEventListener("click", open);
+
+          card.addEventListener("keydown", event => {
+
+            if (
+              event.key === "Enter" ||
+              event.key === " "
+            ) {
+
+              event.preventDefault();
+              open();
+
+            }
+          });
+
+        });
+    }
+
+    function openArticle(blogId) {
+
+      const blog =
+        state.blogs.find(item => item.id === blogId);
+
+      if (!blog) return;
+
+      const color =
+        safeColor(blog.color);
+
+      const textColors =
+        getReadableTextColors(color);
+
+      const article =
+        $("#article-body");
+
+      article.style.setProperty(
+        "--article-bg",
+        color
+      );
+
+      article.style.setProperty(
+        "--article-text",
+        textColors.text
+      );
+
+      article.style.setProperty(
+        "--article-muted",
+        textColors.muted
+      );
+
+      article.innerHTML = `
+
+        <div class="article-meta">
+
+          <span>
+            ${escapeHtml(blog.category)}
+          </span>
+
+          <span>•</span>
+
+          <span>
+            ${escapeHtml(formatDate(blog.date))}
+          </span>
+
+        </div>
+
+        <h1 id="modal-title">
+          ${escapeHtml(blog.title)}
+        </h1>
+
+        <div class="article-content">
+          ${renderContent(blog.content)}
+        </div>
+
+      `;
+
+      /* VIDEO */
+
+      const videoSection =
+        $("#video-section");
+
+      const videoId =
+        extractYouTubeId(blog.youtube);
+
+      if (videoId) {
+
+        videoSection.classList.remove("hidden");
+
+        $("#video-thumb").src =
+          `https://img.youtube.com/vi/${encodeURIComponent(videoId)}/hqdefault.jpg`;
+
+        $("#video-link").href =
+          blog.youtube;
+
+      } else {
+
+        videoSection.classList.add("hidden");
+
+        $("#video-thumb")
+          .removeAttribute("src");
+
+        $("#video-link")
+          .removeAttribute("href");
+      }
+
+      /* SOURCES */
+
+      const sourcesSection =
+        $("#sources-section");
+
+      const sourcesList =
+        $("#sources-list");
+
+      if (
+        Array.isArray(blog.sources) &&
+        blog.sources.length
+      ) {
+
+        sourcesSection.classList.remove("hidden");
+
+        sourcesList.innerHTML =
+          blog.sources.map(source => `
+
+            <a
+              class="source-link"
+              href="${escapeHtml(source.link)}"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              ${escapeHtml(source.name)}
+            </a>
+
+          `).join("");
+
+      } else {
+
+        sourcesSection.classList.add("hidden");
+        sourcesList.innerHTML = "";
+      }
+
+      $("#modal").scrollTop = 0;
+      $(".modal-article").scrollTop = 0;
+      $(".sources-list").scrollTop = 0;
+
+      $("#modal").classList.add("show");
+      document.body.classList.add("modal-open");
+    }
+
+    function closeModal() {
+
+      $("#modal").classList.remove("show");
+      document.body.classList.remove("modal-open");
+
+    }
+
+    $("#close-modal")
+      .addEventListener("click", closeModal);
+
+    $("#modal")
+      .addEventListener("click", event => {
+
+        if (event.target === $("#modal")) {
+          closeModal();
+        }
+
+      });
+
+    document.addEventListener("keydown", event => {
+
+      if (event.key === "Escape") {
+        closeModal();
+      }
+
+    });
+
+    /* SEARCH */
+
+    $("#search-input")
+      .addEventListener("input", event => {
+
+        state.searchQuery =
+          event.target.value;
+
+        $("#clear-search")
+          .classList.toggle(
+            "show",
+            Boolean(state.searchQuery)
+          );
+
+        renderBlogs();
+
+      });
+
+    $("#clear-search")
+      .addEventListener("click", () => {
+
+        $("#search-input").value = "";
+        state.searchQuery = "";
+
+        $("#clear-search")
+          .classList.remove("show");
+
+        renderBlogs();
+        $("#search-input").focus();
+
+      });
+
+    /* SORT */
+
+    $("#sort-select")
+      .addEventListener("change", event => {
+
+        state.sortOrder =
+          event.target.value;
+
+        renderBlogs();
+
+      });
+
+    /* BACK TO TOP */
+
+    const backToTop =
+      $("#back-to-top");
+
+    window.addEventListener("scroll", () => {
+
+      if (window.scrollY > 450) {
+        backToTop.classList.add("show");
+      } else {
+        backToTop.classList.remove("show");
+      }
+
+    }, { passive: true });
+
+    backToTop.addEventListener("click", () => {
+
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+
+    });
+
+    loadBlogFiles();
+
+  </script>
 
 </body>
 </html>
